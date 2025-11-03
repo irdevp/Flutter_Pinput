@@ -52,7 +52,7 @@ class _PinputState extends State<Pinput>
       widget.controller ?? _controller!.value;
 
   @protected
-  FocusNode get _effectiveFocusNode =>
+  FocusNode get effectiveFocusNode =>
       widget.focusNode ?? (_focusNode ??= FocusNode());
 
   @protected
@@ -83,7 +83,7 @@ class _PinputState extends State<Pinput>
       _recentControllerValue = _effectiveController.value;
       widget.controller!.addListener(_handleTextEditingControllerChanges);
     }
-    _effectiveFocusNode.canRequestFocus = isEnabled && widget.useNativeKeyboard;
+    effectiveFocusNode.canRequestFocus = isEnabled && widget.useNativeKeyboard;
     _maybeInitSmartAuth();
     _maybeCheckClipboard();
     // https://github.com/Tkko/Flutter_Pinput/issues/89
@@ -135,14 +135,14 @@ class _PinputState extends State<Pinput>
 
   void _maybeCloseKeyboard() {
     if (widget.closeKeyboardWhenCompleted) {
-      _effectiveFocusNode.unfocus();
+      effectiveFocusNode.unfocus();
     }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _effectiveFocusNode.canRequestFocus = _canRequestFocus;
+    effectiveFocusNode.canRequestFocus = _canRequestFocus;
   }
 
   @override
@@ -162,7 +162,7 @@ class _PinputState extends State<Pinput>
       widget.controller?.addListener(_handleTextEditingControllerChanges);
     }
 
-    _effectiveFocusNode.canRequestFocus = _canRequestFocus;
+    effectiveFocusNode.canRequestFocus = _canRequestFocus;
   }
 
   @override
@@ -191,9 +191,8 @@ class _PinputState extends State<Pinput>
   @override
   void dispose() {
     widget.controller?.removeListener(_handleTextEditingControllerChanges);
-    _controller?.removeListener(_handleTextEditingControllerChanges);
-    _controller?.dispose();
     _focusNode?.dispose();
+    _controller?.dispose();
     _smsRetriever?.dispose();
     // https://github.com/Tkko/Flutter_Pinput/issues/89
     _ambiguate(WidgetsBinding.instance)!.removeObserver(this);
@@ -201,7 +200,7 @@ class _PinputState extends State<Pinput>
   }
 
   void _requestKeyboard() {
-    if (_effectiveFocusNode.canRequestFocus) {
+    if (effectiveFocusNode.canRequestFocus) {
       _editableText?.requestKeyboard();
     }
   }
@@ -301,9 +300,9 @@ class _PinputState extends State<Pinput>
         forcePressEnabled = false;
         textSelectionControls ??= cupertinoDesktopTextSelectionHandleControls;
         handleDidGainAccessibilityFocus = () {
-          if (!_effectiveFocusNode.hasFocus &&
-              _effectiveFocusNode.canRequestFocus) {
-            _effectiveFocusNode.requestFocus();
+          if (!effectiveFocusNode.hasFocus &&
+              effectiveFocusNode.canRequestFocus) {
+            effectiveFocusNode.requestFocus();
           }
         };
         break;
@@ -320,9 +319,9 @@ class _PinputState extends State<Pinput>
         forcePressEnabled = false;
         textSelectionControls ??= desktopTextSelectionHandleControls;
         handleDidGainAccessibilityFocus = () {
-          if (!_effectiveFocusNode.hasFocus &&
-              _effectiveFocusNode.canRequestFocus) {
-            _effectiveFocusNode.requestFocus();
+          if (!effectiveFocusNode.hasFocus &&
+              effectiveFocusNode.canRequestFocus) {
+            effectiveFocusNode.requestFocus();
           }
         };
         break;
@@ -410,7 +409,7 @@ class _PinputState extends State<Pinput>
           },
           onTapOutside: widget.onTapOutside,
           mouseCursor: MouseCursor.defer,
-          focusNode: _effectiveFocusNode,
+          focusNode: effectiveFocusNode,
           textAlign: TextAlign.center,
           autofocus: widget.autofocus,
           inputFormatters: formatters,
@@ -452,7 +451,7 @@ class _PinputState extends State<Pinput>
         // ignore: deprecated_member_use
         if (_isHovering) MaterialState.hovered,
         // ignore: deprecated_member_use
-        if (_effectiveFocusNode.hasFocus) MaterialState.focused,
+        if (effectiveFocusNode.hasFocus) MaterialState.focused,
         // ignore: deprecated_member_use
         if (hasError) MaterialState.error,
       },
@@ -512,7 +511,7 @@ class _PinputState extends State<Pinput>
     return Center(
       child: AnimatedBuilder(
         animation: Listenable.merge(
-          <Listenable>[_effectiveFocusNode, _effectiveController],
+          <Listenable>[effectiveFocusNode, _effectiveController],
         ),
         builder: (BuildContext context, Widget? child) {
           final shouldHideErrorContent =
@@ -539,7 +538,7 @@ class _PinputState extends State<Pinput>
   @protected
   bool get hasFocus {
     final isLastPin = selectedIndex == widget.length;
-    return _effectiveFocusNode.hasFocus ||
+    return effectiveFocusNode.hasFocus ||
         (!widget.useNativeKeyboard && !isLastPin);
   }
 

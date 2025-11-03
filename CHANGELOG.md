@@ -1,14 +1,8 @@
-#### 5.0.2 ·01/09/2025
-
-- feat: add enableInteractiveSelection parameter
-  flag - [PR](https://github.com/Tkko/Flutter_Pinput/pull/216)
-  by [bybabek](https://github.com/bybabek)
-
 #### 5.0.1 ·15/01/2025
 
 - fix: makes Semantics responsive to `enabled`
   flag - [PR](https://github.com/Tkko/Flutter_Pinput/pull/201)
-  by [sharabiddin](https://github.com/sharabiddin)
+  by [irdevp](https://github.com/irdevp)
 
 #### 5.0.0 · 7/06/2024
 
